@@ -8,10 +8,17 @@
 
   %body
     %h1.title Rotten Potatoes!
+    
+    <%= button_to "New", action: "new" %>
+    
     #main
       - if flash[:notice]
         #notice.message= flash[:notice]
       - elsif flash[:warning]
         #warning.message= flash[:warning]
+      - elsif flash[:notice_user]
+        #notice.message = flash[:notice_user]
 
       = yield
+      
+    
