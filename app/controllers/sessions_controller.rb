@@ -24,12 +24,10 @@ class SessionsController < ApplicationController
         end
     end
     
-    def destory
+    def destroy
         session[:session_token] = nil
         flash[:notice] = "You've logged out"
         redirect_to movies_path
-        
     end
 
-    
 end
