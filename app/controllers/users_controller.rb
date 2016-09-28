@@ -6,41 +6,46 @@ class UsersController < ApplicationController
     end
     
     def show
-        userID = params[:user_id] #retrieve users_id from URI route
-        @user = User.find(userID)
-        # will render app/views/uers/show.<extension> by default
+      id = params[:id] #retrieve users_id from URI route
+      @user = User.find(id)
+      # will render app/views/users/show.<extension> by default
     end
     
     def index
-        @users = User.all
+      @users = User.all
     end
     
     def new
-    # default: render 'new' template
+        # default: render 'new' template
     end
     
     def create
-        @user = User.create!(user_params)
-        flash[:notice] = "#{@user.user_id} was successfully created."
-        #redirect_to movies_path
+        if User.exists?(:user_id => user_params[:user_id])
+             flash[:notice_user] = "Sorry, this user-id is taken. Try again."
+             redirect_to login_path
+        else
+            User.create_user!(user_params);
+            flash[:notice_user] = "Welcome #{user_params[:user_id]}. Your account has been created."
+            redirect_to login_path
+        end
     end
     
     def edit
-        @user = User.find params[:user_id]
+        @user = User.find params[:id]
     end
     
     def update
-        @user = User.find params[:user_id]
-        @user.update_attributes!(movie_params)
-        flash[:notice] = "#{@user.user_id} was successfully updated."
-        #redirect_to movie_path(@movie)
+        @user = User.find params[:id]
+        @user.update_attributes!(user_params)
+        flash[:notice_user] = "#{@user.user_id} was successfully updated."
+        redirect_to user_path
     end
     
     def destroy
-        @user = User.find(params[:user_id])
+        @user = User.find(params[:id])
         @user.destroy
-        flash[:notice] = "User '#{@user.user_id}' deleted."
-        #redirect_to movies_path
+        flash[:notice_user] = "User '#{@user.user_id}' deleted."
+        redirect_to movies_path
     end
     
     
